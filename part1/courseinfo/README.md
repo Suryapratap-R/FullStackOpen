@@ -1,12 +1,3 @@
-# FullStackOpen: Part1: Introduction to React
-
-![Part1: CourseInfo Exercise](part1-courseinfo.png)
-
-
-<br>
-<br>
-<br>
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
