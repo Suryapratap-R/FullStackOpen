@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const statsLine = (text, value) => <>{text} {value} <br /></>
 
 const Stats = ({good, neutral, bad}) => {
-  
+  const total = good+bad+neutral
   return (
     <div>
       <h1>statics</h1>
@@ -11,6 +11,9 @@ const Stats = ({good, neutral, bad}) => {
         {statsLine('good', good)}
         {statsLine('neutral', neutral)}
         {statsLine('bad', bad)}
+        {statsLine('all', total)}
+        {statsLine('average', (good-bad)/total)}
+        {statsLine('positive', good/total)}
       </p>
     </div>
   )
