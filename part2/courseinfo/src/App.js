@@ -1,23 +1,6 @@
 import React from 'react'
+import Courses from './components/courses';
 
-const CourseModule = (course) => {
-  return (
-    <div key={course.id}>
-      <h2 key={course.id}>{course.name}</h2>
-          {course.parts.map((part) =>
-            <div key={part.id}>
-              {part.name} {part.exercises}
-            </div>
-            )}
-      <strong>total of {course.parts.reduce((sum, part)=>part.exercises+sum, 0)} exercises</strong>
-    </div>
-  )
-}
-
-const Course = ({ courses }) => {
-  return courses.map((c)=>CourseModule(c))
-
-}
 
 const App = () => {
   const courses = [
@@ -66,7 +49,7 @@ const App = () => {
   ]
 
 
-  return <Course courses={courses} />
+  return <Courses courses={courses} />
 }
 
 export default App
