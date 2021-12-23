@@ -4,19 +4,23 @@ const statsLine = (text, value) => <>{text} {value} <br /></>
 
 const Stats = ({good, neutral, bad}) => {
   const total = good+bad+neutral
-  return (
-    <div>
-      <h1>statics</h1>
-      <p>
-        {statsLine('good', good)}
-        {statsLine('neutral', neutral)}
-        {statsLine('bad', bad)}
-        {statsLine('all', total)}
-        {statsLine('average', (good-bad)/total)}
-        {statsLine('positive', good/total)}
-      </p>
-    </div>
-  )
+  if (total > 0) {
+    return (
+      <div>
+        <h1>statics</h1>
+        <p>
+          {statsLine('good', good)}
+          {statsLine('neutral', neutral)}
+          {statsLine('bad', bad)}
+          {statsLine('all', total)}
+          {statsLine('average', (good-bad)/total)}
+          {statsLine('positive', good/total)}
+        </p>
+      </div>
+   )
+  } else {
+    return (<p>No feedback given</p>)
+  }
 }
 
 const Button = ({text, onClick}) => (<button onClick={onClick}>{text}</button>)
