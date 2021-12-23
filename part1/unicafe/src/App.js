@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const staticLine = (text, value) => (<div> {text} {value} </div>)
+const staticLine = (text, value) => (<tr><td>{text}</td><td>{value}</td></tr>)
 
 const Stats = ({good, neutral, bad}) => {
   const total = good+bad+neutral
@@ -8,14 +8,16 @@ const Stats = ({good, neutral, bad}) => {
     return (
       <div>
         <h1>statics</h1>
-        <div>
-          {staticLine('good', good)}
-          {staticLine('neutral', neutral)}
-          {staticLine('bad', bad)}
-          {staticLine('all', total)}
-          {staticLine('average', (good-bad)/total)}
-          {staticLine('positive', good/total)}
-        </div>
+        <table>
+          <tbody>
+            {staticLine('good', good)}
+            {staticLine('neutral', neutral)}
+            {staticLine('bad', bad)}
+            {staticLine('all', total)}
+            {staticLine('average', (good-bad)/total)}
+            {staticLine('positive', good/total)}
+          </tbody>
+        </table>
       </div>
    )
   } else {
