@@ -15,6 +15,7 @@ const FilteredCountries = ({viewCountries, setViewCountries}) => {
         {Object.values(country.languages).map((lang) => <li key={lang}>{ lang }</li>)}
       </ul>
       <div>{country.flag}</div>
+      <h3>Weather in { country.capital }</h3>
     </>
     
   }
