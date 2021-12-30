@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-const FilteredCountries = ({viewCountries}) => {
-  console.log(viewCountries);
+const FilteredCountries = ({viewCountries, setViewCountries}) => {
   if (viewCountries.length > 10) {
     return 'Too many matches, specify another filter'
   } else if (viewCountries.length === 1) {
@@ -20,7 +19,9 @@ const FilteredCountries = ({viewCountries}) => {
     
   }
   return viewCountries.map((country) =>
-    <div key={country.name.official}>{country.name.common}</div>)
+    <div key={country.name.official}>{country.name.common}
+      <button onClick={()=>setViewCountries([country])}>show</button>
+    </div>)
 }
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
     <div >
       find country <input onChange={handleFindCountry}/>
       <div>
-        <FilteredCountries viewCountries={ viewCountries }/>
+        <FilteredCountries viewCountries={viewCountries} setViewCountries={ setViewCountries }/>
       </div>
     </div>
   );
