@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import phoneService from './services/phonebook';
 
-
+const NotificationBanner = ({message, messageColor}) => {
+  const baseStyle = {
+    color: messageColor,
+    padding: '1rem',
+    margin: '1rem',
+    border: '4px solid',
+    borderRadius: '6px',
+    backgroundColor: '#C2CAD0'
+  }
+  if (message === null) {
+    return null
+  }
+  return <div style={baseStyle}>{ message }</div>
+}
 
 const PersonRecord = ({name, number, deleteWithId}) => <div>{name} {number} <button onClick={deleteWithId}>delete</button></div>
 
@@ -35,6 +48,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterWord, setFilterWord] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notificationColor, setNotificationColor] = useState('black')
 
   const deleteWithId = (id) => {
     const confirmDelete = window.confirm(`delete ${persons.find(p=>p.id === id).name}?`)
@@ -55,6 +70,11 @@ const App = () => {
       
       setNewName('')
       setNewNumber('')
+      setNotificationMessage(`Added ${newName}`)
+      setNotificationColor('green')
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 3000)
     } else {
       const replace = window.confirm(`${newName} is already added to phone, replace the old number with a new one?`)
       if (replace) {
@@ -84,10 +104,12 @@ const App = () => {
     setFilterWord(event.target.value)
   }
   
+  
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <NotificationBanner message={notificationMessage} messageColor={notificationColor}/>
       <Filter handleFilterChange = {handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm addNumber={addNumber}
