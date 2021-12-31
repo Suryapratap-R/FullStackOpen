@@ -16,7 +16,7 @@ const Filter = ({handleFilterChange}) => <div>
       </div>
 
 const PersonForm = (props) =>
-      <form onSubmit={props.addRecord}>
+      <form onSubmit={props.addNumber}>
         <div>
           name: <input value={props.newName} onChange={props.handleNameChange}/>
         </div>
@@ -33,11 +33,15 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterWord, setFilterWord] = useState('')
 
-  const addRecord = (event) => {
+  const addNumber = (event) => {
     event.preventDefault()
    
     if ((persons.map((person) => person.name).indexOf(newName)) === -1) {
-      setPersons(persons.concat({ name: newName,  number: newNumber}))
+      const newPerson = { name: newName,  number: newNumber}
+      axios.post('http://localhost:3001/persons', newPerson)
+        .then(response =>
+        { setPersons(persons.concat(response.data)) })
+      
       setNewName('')
       setNewNumber('')
     } else {
@@ -66,7 +70,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter handleFilterChange = {handleFilterChange} />
       <h2>add a new</h2>
-      <PersonForm addRecord={addRecord}
+      <PersonForm addNumber={addNumber}
         handleNameChange={handleNameChange}
         newName={newName} newNumber={newNumber}
         handleNumberChange={handleNumberChange} />
