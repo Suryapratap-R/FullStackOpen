@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 import phoneService from './services/phonebook';
 
 
-const PhoneList = ({searchkey, p}) =>
+
+const PersonRecord = ({name, number, deleteWithId}) => <div>{name} {number} <button onClick={deleteWithId}>delete</button></div>
+
+const PhoneList = ({searchkey, p, deleteWithId}) =>
 {
   return <div>
     {searchkey === '' ?
-      p.map((person) => <div key={person.id}>{person.name} {person.number}</div>) :
-      p.filter((val) => val.name.toLowerCase().includes(searchkey.toLowerCase())).map((person) => <div key={person.name}>{person.name} {person.number} </div>)}
+      p.map((person) => <PersonRecord key={person.id} name={person.name} number={person.number} deleteWithId={()=>deleteWithId(person.id)}/>) :
+      p.filter((val) => val.name.toLowerCase().includes(searchkey.toLowerCase())).map((person) => <PersonRecord key={person.id} name={person.name} number={person.number}/>)}
   </div>
 }
 
@@ -32,6 +35,14 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterWord, setFilterWord] = useState('')
+
+  const deleteWithId = (id) => {
+    const confirmDelete = window.confirm(`delete ${persons.find(p=>p.id === id).name}?`)
+    if (confirmDelete) {
+      phoneService.deleteRecord(id).then(data => {})
+      setPersons(persons.filter(p=>p.id !== id))
+    }
+  }
 
   const addNumber = (event) => {
     event.preventDefault()
@@ -75,7 +86,7 @@ const App = () => {
         newName={newName} newNumber={newNumber}
         handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <PhoneList p={persons} searchkey={filterWord} />
+      <PhoneList p={persons} searchkey={filterWord} deleteWithId={deleteWithId}/>
     </div>
   )
 }
