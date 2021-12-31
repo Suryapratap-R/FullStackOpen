@@ -47,8 +47,8 @@ const App = () => {
   const addNumber = (event) => {
     event.preventDefault()
    
-    if ((persons.map((person) => person.name).indexOf(newName)) === -1) {
-      const newPerson = { name: newName,  number: newNumber}
+    const newPerson = { name: newName,  number: newNumber}
+    if (persons.findIndex((person) => person.name === newName) === -1) {
       phoneService.create(newPerson)
         .then(person =>
         { setPersons(persons.concat(person)) })
@@ -56,7 +56,16 @@ const App = () => {
       setNewName('')
       setNewNumber('')
     } else {
-      window.alert(`${newName} is already added to phone`)
+      const replace = window.confirm(`${newName} is already added to phone, replace the old number with a new one?`)
+      if (replace) {
+        phoneService.update(persons.find(p => p.name === newName).id, newPerson)
+        .then(person =>
+        {
+          setPersons(persons.map(p=>p.id!==person.id ? p : person))
+        })
+      setNewName('')
+      setNewNumber('')
+      }
     }
   }
 
