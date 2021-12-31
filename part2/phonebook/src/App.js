@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
+import phoneService from './services/phonebook';
 
 
 const PhoneList = ({searchkey, p}) =>
 {
   return <div>
     {searchkey === '' ?
-      p.map((person) => <div key={person.name}>{person.name} {person.number}</div>) :
+      p.map((person) => <div key={person.id}>{person.name} {person.number}</div>) :
       p.filter((val) => val.name.toLowerCase().includes(searchkey.toLowerCase())).map((person) => <div key={person.name}>{person.name} {person.number} </div>)}
   </div>
 }
@@ -38,9 +38,9 @@ const App = () => {
    
     if ((persons.map((person) => person.name).indexOf(newName)) === -1) {
       const newPerson = { name: newName,  number: newNumber}
-      axios.post('http://localhost:3001/persons', newPerson)
-        .then(response =>
-        { setPersons(persons.concat(response.data)) })
+      phoneService.create(newPerson)
+        .then(person =>
+        { setPersons(persons.concat(person)) })
       
       setNewName('')
       setNewNumber('')
@@ -49,10 +49,10 @@ const App = () => {
     }
   }
 
-  const fetchApi = () => {
-    axios.get('http://localhost:3001/persons').then((response)=>setPersons(response.data))
+  const addAllPhone = () => {
+    phoneService.getAll().then((phone)=>setPersons(phone))
   }
-  useEffect(fetchApi, [])
+  useEffect(addAllPhone, [])
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
