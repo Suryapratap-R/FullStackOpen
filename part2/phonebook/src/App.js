@@ -54,7 +54,13 @@ const App = () => {
   const deleteWithId = (id) => {
     const confirmDelete = window.confirm(`delete ${persons.find(p=>p.id === id).name}?`)
     if (confirmDelete) {
-      phoneService.deleteRecord(id).then(data => {})
+      phoneService.deleteRecord(id).then(data => { }).catch(err => {
+        setNotificationMessage(`Information of '${persons.find(p=>p.id === id).name}' has already deleted from server`)
+      setNotificationColor('crimson')
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 3000)
+      })
       setPersons(persons.filter(p=>p.id !== id))
     }
   }
