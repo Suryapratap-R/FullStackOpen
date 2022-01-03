@@ -59,7 +59,7 @@ const App = () => {
       setNotificationColor('crimson')
       setTimeout(() => {
         setNotificationMessage(null)
-      }, 3000)
+      }, 6000)
       })
       setPersons(persons.filter(p=>p.id !== id))
     }
@@ -80,7 +80,7 @@ const App = () => {
       setNotificationColor('green')
       setTimeout(() => {
         setNotificationMessage(null)
-      }, 3000)
+      }, 6000)
     } else {
       const replace = window.confirm(`${newName} is already added to phone, replace the old number with a new one?`)
       if (replace) {
@@ -110,10 +110,13 @@ const App = () => {
     setFilterWord(event.target.value)
   }
   
-  
+  const sizing = {
+    width: '500px',
+    margin: 'auto'
+  }
 
   return (
-    <div>
+    <div style={sizing}>
       <h2>Phonebook</h2>
       <NotificationBanner message={notificationMessage} messageColor={notificationColor}/>
       <Filter handleFilterChange = {handleFilterChange} />
