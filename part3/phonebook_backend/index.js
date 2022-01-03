@@ -1,4 +1,3 @@
-const { response } = require('express')
 const express = require('express')
 
 const app = express()
@@ -42,6 +41,24 @@ app.get('/api/persons/:id', (request, response) => {
         response.json(person)
     } else {
         response.status(404).end()
+    }
+})
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+    
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    } else {
+        const person = {
+            name: body.name,
+            phone: body.phone,
+            id: Math.floor(Math.random() * 100000),
+        }
+        persons.concat(person)
+        response.json(person)
     }
 })
 
