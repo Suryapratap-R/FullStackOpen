@@ -46,10 +46,22 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    
-    if (!body.name) {
+
+    if (body.name === undefined && body.number === undefined) {
         return response.status(400).json({
             error: 'content missing'
+        })
+    } else if (body.name === undefined && body.number !== undefined) {
+        return response.status(400).json({
+            error: 'name missing'
+        })
+    } else if (body.name !== undefined && body.number === undefined) {
+        return response.status(400).json({
+            error: 'body missing'
+        })
+    } else if (persons.find(person => person.name === body.name)) {
+        return response.status(400).json({
+            error: 'name must be unique'
         })
     } else {
         const person = {
