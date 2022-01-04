@@ -4,7 +4,14 @@ const morgan = require('morgan')
 const app = express()
 app.use(express.json())
 
-app.use(morgan('tiny'))
+morgan.token('body', req => {
+    if (req.method === 'POST') {
+        return JSON.stringify(req.body)
+    }
+    return ' '
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 let persons = [
     { 
@@ -48,7 +55,6 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-    console.log(request.body);
     const body = request.body
 
     if (body.name === undefined && body.number === undefined) {
@@ -82,7 +88,6 @@ app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
     response.status(204).end()
-    console.log(persons);
 })
 
 const unknownEndpoint = (request, response) => {
@@ -92,4 +97,4 @@ app.use(unknownEndpoint)
 
 const PORT = 3001
 app.listen(PORT)
-console.log(`Server is running on port ${PORT}`);
+console.debug(`Server is running on port ${PORT}`);
