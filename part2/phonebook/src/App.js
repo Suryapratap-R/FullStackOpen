@@ -71,18 +71,20 @@ const App = () => {
     const newPerson = { name: newName,  number: newNumber}
     if (persons.findIndex((person) => person.name === newName) === -1) {
       phoneService.create(newPerson)
-        .then(person =>
-        { setPersons(persons.concat(person)) })
-      
-      setNewName('')
-      setNewNumber('')
-      setNotificationMessage(`Added ${newName}`)
-      setNotificationColor('green')
-      setTimeout(() => {
-        setNotificationMessage(null)
-      }, 6000)
-    } else {
-      const replace = window.confirm(`${newName} is already added to phone, replace the old number with a new one?`)
+      .then(person =>
+        {
+          setPersons(persons.concat(person))
+        })
+        
+        setNewName('')
+        setNewNumber('')
+        setNotificationMessage(`Added ${newName}`)
+        setNotificationColor('green')
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 6000)
+      } else {
+        const replace = window.confirm(`${newName} is already added to phone, replace the old number with a new one?`)
       if (replace) {
         phoneService.update(persons.find(p => p.name === newName).id, newPerson)
         .then(person =>
