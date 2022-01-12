@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=prod node index.js",
-    "dev": "NODE_ENV=dev nodemon index.js",
-    "test": "NODE_ENV=test jest --verbose --runInBand"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest --verbose --runInBand"
   },
   "author": "suryapratap",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
+    "json-server": "^0.17.0",
     "lodash": "^4.17.21",
     "mongoose": "^6.1.5"
   },
