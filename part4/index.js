@@ -6,7 +6,7 @@ const logger = require('./utils/logger')
 
 const mongoUrl = process.env.MONGODB_URL
 mongoose.connect(mongoUrl).then(() => {
-  logger.info("connected to mongodb")
+  logger.info('connected to mongodb')
 })
 
 const server = http.createServer(app)

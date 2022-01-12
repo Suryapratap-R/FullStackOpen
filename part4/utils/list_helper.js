@@ -1,8 +1,8 @@
-const _ = require('lodash');
+const _ = require('lodash')
 
 const mostBlogs = (blogList) => {
   const authors = _.map(blogList, 'author')
-  const noBlog = _.mapValues( _.groupBy(authors), (o)=>o.length)
+  const noBlog = _.mapValues( _.groupBy(authors), (o) => o.length)
 
   const maxBlogs = Object.entries(noBlog)
     .reduce((prev, cur) => prev[1] > cur[1] ? prev : cur, [])
@@ -18,18 +18,18 @@ const mostBlogs = (blogList) => {
 const mostLikes = (blogList) => {
   const groupAuthor = _.groupBy(blogList, 'author')
   const authorLikes = _.mapValues(groupAuthor, (o) => o.reduce((prev, cur) => {
-      return prev + cur.likes;
+    return prev + cur.likes
   }, 0)
   )
   const mostLiked = Object.entries(authorLikes).reduce((prev, cur) => {
-    return prev[1] > cur[1] ? prev : cur;
+    return prev[1] > cur[1] ? prev : cur
   }, 0)
   return mostLiked === 0
     ? {}
     : {
-    author: mostLiked[0],
-    likes: mostLiked[1]
-  }
+      author: mostLiked[0],
+      likes: mostLiked[1]
+    }
 }
 
 const dummy = (blogs) => {
@@ -37,9 +37,9 @@ const dummy = (blogs) => {
 }
 
 const totalLikes = (blogPost) =>
-    blogPost.length === 0
-        ? 0
-        : blogPost.reduce((sum, blog) => sum + blog.likes, 0)
+  blogPost.length === 0
+    ? 0
+    : blogPost.reduce((sum, blog) => sum + blog.likes, 0)
 
 const favorateBlog = (blogList) => blogList.find(blog => blog.likes === Math.max(...blogList.map((val) => val.likes)))
  
