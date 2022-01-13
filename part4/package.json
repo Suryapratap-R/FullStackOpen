@@ -1,31 +1,25 @@
 {
-  "name": "bloglist",
+  "name": "blogs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "jest --verbose",
     "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "jest --verbose --runInBand"
+    "dev": "nodemon index.js"
   },
   "author": "suryapratap",
   "license": "ISC",
-  "devDependencies": {
-    "eslint": "^8.6.0",
-    "jest": "^27.4.7",
-    "nodemon": "^2.0.15",
-    "supertest": "6.2.0"
-  },
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
+    "dotenv": "^11.0.0",
     "express": "^4.17.2",
-    "express-async-errors": "^3.1.1",
-    "json-server": "^0.17.0",
-    "lodash": "^4.17.21",
-    "mongoose": "^6.1.5"
+    "loadash": "^1.0.0",
+    "mongoose": "^6.1.6"
   },
-  "jest": {
-    "testEnvironment": "node"
+  "devDependencies": {
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.0"
   }
 }
