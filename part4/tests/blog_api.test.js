@@ -21,6 +21,7 @@ test('verify api endpoint', async () => {
         .expect('Content-Type', /application\/json/)
   
 }, 10000)
+
 test('check id', async () => {
     const res = await api.get('/api/blogs')
     expect(res.body[0].id).toBeDefined()
@@ -35,8 +36,16 @@ test('verifing POST /api/blogs creates new blogpost', async () => {
     })
 
     const res = await api.get('/api/blogs')
-    
     expect(res.body).toHaveLength(testData.length+1)
+})
+
+test('check default value for likes', async () => {
+    res = await api.post('/api/blogs').send({"title": "fifth post",
+    "author": "suryapratap",
+    "url": "/4",
+    })
+
+    expect(res.body.likes).toBeDefined()
 })
 
 afterAll(() => {
