@@ -47,6 +47,10 @@ test('check default value for likes', async () => {
 
     expect(res.body.likes).toBeDefined()
 })
+test('check for bad post request',async () => {
+    await api.post('/api/blogs').send({ "author": "suryapratap" }).expect(400)
+})
+
 
 afterAll(() => {
     console.log("connection closed");
