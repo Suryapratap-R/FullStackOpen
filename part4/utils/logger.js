@@ -1,5 +1,7 @@
 info = (...args) => {
-    console.log(...args);
+    if (process.env.NODE_ENV !== 'test') {
+        console.log(...args);
+    }
 }
 
 error = (...args) => {
