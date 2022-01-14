@@ -18,5 +18,11 @@ bloglistRouter.post('/', async (request, response) => {
     response.json(result)
 })
 
+bloglistRouter.delete('/:id', async (request, response) => {
+    const id = request.params.id
+
+    await Blog.findByIdAndDelete(id)
+    response.status(204).end()
+})
 
 module.exports = bloglistRouter

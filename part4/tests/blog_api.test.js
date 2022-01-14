@@ -51,6 +51,16 @@ test('check for bad post request',async () => {
     await api.post('/api/blogs').send({ "author": "suryapratap" }).expect(400)
 })
 
+test('delete first post', async () => {
+    const blogList = await api.get('/api/blogs').expect(200)
+    const idFirstBlog = blogList.body[0].id
+
+    await api.delete(`/api/blogs/${idFirstBlog}`).expect(204)
+
+    const blogsAfterDelete = await api.get('/api/blogs').expect(200)
+    expect(blogsAfterDelete.body).toHaveLength(blogList.body.length - 1)
+})
+
 
 afterAll(() => {
     console.log("connection closed");
