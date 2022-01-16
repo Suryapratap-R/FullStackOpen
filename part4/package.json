@@ -11,12 +11,15 @@
   "author": "suryapratap",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^11.0.0",
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^8.5.1",
     "loadash": "^1.0.0",
-    "mongoose": "^6.1.6"
+    "mongoose": "^6.1.6",
+    "mongoose-unique-validator": "^2.0.1"
   },
   "devDependencies": {
     "jest": "^27.4.7",
