@@ -2,6 +2,7 @@ const bloglistRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jsonwebtoken = require('jsonwebtoken');
+const middleware = require('../utils/middleware')
 
 
 
@@ -32,18 +33,19 @@ bloglistRouter.post('/', async (request, response) => {
     response.status(201).json(result)
 })
 
-bloglistRouter.delete('/:id', async (request, response) => {
+bloglistRouter.delete('/:id',middleware.userExtractor, async (request, response) => {
     const postId = request.params.id
-    const decodedToken = jsonwebtoken.verify(request.token, process.env.JWT_SECRET)
-    if (!decodedToken.id) {
-        return response.status(401).json({'error': 'token invalid or missing'})
-    }
-
+    // const decodedToken = jsonwebtoken.verify(request.token, process.env.JWT_SECRET)
+    // if (!decodedToken.id) {
+    //     return response.status(401).json({'error': 'token invalid or missing'})
+    // }
+    const user = request.user
+    console.log(user);
     const blog = await Blog.findById(postId)
+    console.log(blog);
     
-    if (blog.user._id.toString() === decodedToken.id) {
+    if (blog.user._id.toString() === user.id.toString()) {
         await Blog.findByIdAndDelete(postId)
-        const user = await User.findById(decodedToken.id)
         user.blogs = user.blogs.filter(post => post !== postId)
         await user.save()
         return response.status(204).end()
