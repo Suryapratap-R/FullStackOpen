@@ -35,18 +35,17 @@ bloglistRouter.post('/', async (request, response) => {
 
 bloglistRouter.delete('/:id',middleware.userExtractor, async (request, response) => {
     const postId = request.params.id
-    // const decodedToken = jsonwebtoken.verify(request.token, process.env.JWT_SECRET)
-    // if (!decodedToken.id) {
-    //     return response.status(401).json({'error': 'token invalid or missing'})
-    // }
     const user = request.user
     console.log(user);
     const blog = await Blog.findById(postId)
     console.log(blog);
     
     if (blog.user._id.toString() === user.id.toString()) {
-        await Blog.findByIdAndDelete(postId)
-        user.blogs = user.blogs.filter(post => post !== postId)
+        await Blog.findByIdAndRemove(postId)
+        console.log(user.blogs.length);
+        user.blogs = user.blogs.filter(post => post.toString() !== postId
+        )
+        console.log(user.blogs.length);
         await user.save()
         return response.status(204).end()
     }
