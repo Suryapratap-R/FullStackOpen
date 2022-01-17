@@ -33,10 +33,22 @@ bloglistRouter.post('/', async (request, response) => {
 })
 
 bloglistRouter.delete('/:id', async (request, response) => {
-    const id = request.params.id
+    const postId = request.params.id
+    const decodedToken = jsonwebtoken.verify(request.token, process.env.JWT_SECRET)
+    if (!decodedToken.id) {
+        return response.status(401).json({'error': 'token invalid or missing'})
+    }
 
-    await Blog.findByIdAndDelete(id)
-    response.status(204).end()
+    const blog = await Blog.findById(postId)
+    
+    if (blog.user._id.toString() === decodedToken.id) {
+        await Blog.findByIdAndDelete(postId)
+        const user = await User.findById(decodedToken.id)
+        user.blogs = user.blogs.filter(post => post !== postId)
+        await user.save()
+        return response.status(204).end()
+    }
+    return response.status(401).json({'error': 'unauthorized to delete post'}).end()
 })
 
 bloglistRouter.put('/:id', async (request, response) => {
