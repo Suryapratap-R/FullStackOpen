@@ -36,9 +36,8 @@ bloglistRouter.post('/', async (request, response) => {
 bloglistRouter.delete('/:id',middleware.userExtractor, async (request, response) => {
     const postId = request.params.id
     const user = request.user
-    console.log(user);
+
     const blog = await Blog.findById(postId)
-    console.log(blog);
     
     if (blog.user._id.toString() === user.id.toString()) {
         await Blog.findByIdAndRemove(postId)

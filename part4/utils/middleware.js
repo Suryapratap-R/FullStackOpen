@@ -6,6 +6,10 @@ const errorHandler = (error, req, res, next) => {
     logger.error(error.message)
     if (error.name === 'ValidationError') {
         res.status(400).json({error: 'malformatted request'})
+    } else if (error.name === 'JsonWebTokenError') {
+        res.status(401).json({error: 'token is invalid or missing'})
+    } else if (error.name === 'CastError') {
+        res.status(400).json({error: 'malformatted id'})
     }
     next(error)
 }
