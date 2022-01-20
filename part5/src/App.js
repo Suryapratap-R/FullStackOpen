@@ -3,15 +3,15 @@ import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
-// const NotificationBanner = ({message, isError}) => 
-// {
-//   const color = isError ? 'Crimson' : 'green'
-//   return message!==null?(
-//     <div style={{ border: `4px solid ${color}`, borderRadius: '8px', padding: '10px', maxWidth: '700px', margin: '18px 0', color: color }}>
-//     {message}
-//     </div>
-//   ):null
-// }
+const NotificationBanner = ({message, isError}) => 
+{
+  const color = isError ? 'Crimson' : 'green'
+  return message!==null?(
+    <div style={{ border: `4px solid ${color}`, borderRadius: '8px', padding: '10px', maxWidth: '700px', margin: '18px 0', color: color }}>
+    {message}
+    </div>
+  ):null
+}
 
 
 const App = () => {
@@ -19,7 +19,8 @@ const App = () => {
   const [user, setUser] = useState(window.localStorage.getItem('user')
     ? JSON.parse(window.localStorage.getItem('user'))
     : null)
-  // const [errorMessage, setErrorMessage] = useState(null)
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [isError, setIsError] = useState(true)
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
 
@@ -44,9 +45,12 @@ const App = () => {
   
   const blogsList = () =>
    ( <>
-      {/* <NotificationBanner message={'null'} isError={false}/> */}
       <h2>blogs</h2>
-      {user.name} logged in
+    {user.name} logged in 
+    <button onClick={() => {
+      window.localStorage.removeItem('user')
+      setUser(null)
+    }}>logout</button>
     <div style={{paddingTop: '20px'}}>
 
       {blogs.map(blog =>
@@ -56,11 +60,9 @@ const App = () => {
       </>)
   const handleUsernameChange = (event) => {
     setUsername(event.target.value)
-    console.log(event.target.value);
   }
   const handlePasswordChange = (event) => {
     setPassword(event.target.value)
-    console.log(event.target.value);
   }
 
   const handleLogin = async (event) => {
@@ -74,11 +76,16 @@ const App = () => {
       setUser(userResponse)
       window.localStorage.setItem('user', JSON.stringify(userResponse))
     } catch (error) {
-      
+      setIsError(true)
+      setNotificationMessage(error.message)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000);
     }
   }
 
-  return <div style={{ margin: '0 Auto', maxWidth: '800px' }}> 
+  return <div style={{ margin: '0 Auto', maxWidth: '800px' }}>
+    <NotificationBanner message={notificationMessage} isError={isError}/>
     {user === null
       ?loginForm()
       : blogsList()}
