@@ -7,7 +7,7 @@ const NotificationBanner = ({message, isError}) =>
 {
   const color = isError ? 'Crimson' : 'green'
   return message!==null?(
-    <div style={{ border: `4px solid ${color}`, borderRadius: '8px', padding: '10px', maxWidth: '700px', margin: '18px 0', color: color }}>
+    <div style={{ border: `4px solid ${color}`, borderRadius: '8px', padding: '10px', maxWidth: '700px', margin: '18px 0', color: color, backgroundColor: 'slategray' }}>
     {message}
     </div>
   ):null
@@ -23,14 +23,14 @@ const App = () => {
   const [isError, setIsError] = useState(true)
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
-  const [author, setAuthor] = useState(null)
-  const [title, setTitle] = useState(null)
-  const [url, setUrl] = useState(null)
+  const [author, setAuthor] = useState('')
+  const [title, setTitle] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [blogs])
 
   
@@ -58,13 +58,13 @@ const App = () => {
     <h2>create new</h2>
     <form onSubmit={handleCreateNew}>
       <div>
-      title:<input onChange={handleTitleChange}/>
+      title:<input value={title} onChange={handleTitleChange}/>
       </div>
       <div>
-      author:<input onChange={handleAuthorChange}/>
+      author:<input value={author} onChange={handleAuthorChange}/>
       </div>
       <div>
-      url:<input onChange={handleUrlChange}/>
+      url:<input value={url} onChange={handleUrlChange}/>
       </div>
       <button type='submit'>create</button>
     </form>
@@ -104,7 +104,7 @@ const App = () => {
       window.localStorage.setItem('user', JSON.stringify(userResponse))
     } catch (error) {
       setIsError(true)
-      setNotificationMessage(error.message)
+      setNotificationMessage('wrong username or password')
       setTimeout(() => {
         setNotificationMessage(null)
       }, 5000);
@@ -114,7 +114,26 @@ const App = () => {
   const handleCreateNew = async (event) => {
     event.preventDefault()
     blogService.setToken(user.token)
-    await blogService.createNew({title, author, url})
+    try {
+      const res = await blogService.createNew({ title, author, url })
+      setIsError(true)
+      console.log(res);
+      setNotificationMessage(`a new blog ${res.title} by ${res.author} added`)
+      setIsError(false)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000);
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+    } catch (error) {
+      setNotificationMessage(error)
+      setIsError(true)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000);
+    }
+    
   }
 
   return <div style={{ margin: '0 Auto', maxWidth: '800px' }}>
