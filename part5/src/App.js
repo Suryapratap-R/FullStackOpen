@@ -23,12 +23,15 @@ const App = () => {
   const [isError, setIsError] = useState(true)
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
+  const [author, setAuthor] = useState(null)
+  const [title, setTitle] = useState(null)
+  const [url, setUrl] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
-  }, [])
+  }, [blogs])
 
   
   const loginForm = () => (
@@ -51,6 +54,20 @@ const App = () => {
       window.localStorage.removeItem('user')
       setUser(null)
     }}>logout</button>
+
+    <h2>create new</h2>
+    <form onSubmit={handleCreateNew}>
+      <div>
+      title:<input onChange={handleTitleChange}/>
+      </div>
+      <div>
+      author:<input onChange={handleAuthorChange}/>
+      </div>
+      <div>
+      url:<input onChange={handleUrlChange}/>
+      </div>
+      <button type='submit'>create</button>
+    </form>
     <div style={{paddingTop: '20px'}}>
 
       {blogs.map(blog =>
@@ -64,6 +81,15 @@ const App = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value)
   }
+  const handleUrlChange = (event) => {
+    setUrl(event.target.value)
+  }
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value)
+  }
+  const handleAuthorChange = (event) => {
+    setAuthor(event.target.value)
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -74,6 +100,7 @@ const App = () => {
         password: password
       })
       setUser(userResponse)
+      blogService.setToken(userResponse.token)
       window.localStorage.setItem('user', JSON.stringify(userResponse))
     } catch (error) {
       setIsError(true)
@@ -82,6 +109,12 @@ const App = () => {
         setNotificationMessage(null)
       }, 5000);
     }
+  }
+
+  const handleCreateNew = async (event) => {
+    event.preventDefault()
+    blogService.setToken(user.token)
+    await blogService.createNew({title, author, url})
   }
 
   return <div style={{ margin: '0 Auto', maxWidth: '800px' }}>
