@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types';
 
 const Blog = ({ blog, updateLike, deletePost }) => {
   const [isVisible, setIsVisible] = useState(false)
@@ -13,7 +14,12 @@ const Blog = ({ blog, updateLike, deletePost }) => {
       deletePost(blog.id)
     }
   }
-
+  
+  Blog.propTypes = {
+    updateLike: PropTypes.func.isRequired,
+    deletePost: PropTypes.func.isRequired,
+    blog: PropTypes.object.isRequired
+  }
   return (
     <div style={{border: '1px solid', borderRadius: '2px', margin: '8px', padding: '8px'}}>
       {blog.title} <button onClick={toggleVisible}>{ !isVisible ? 'show': 'hide'}</button>

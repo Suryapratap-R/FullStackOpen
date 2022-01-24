@@ -153,6 +153,7 @@ const App = () => {
       {user === null
         ? loginForm()
         : blogsList()}
+      
     </div>
   }
 
