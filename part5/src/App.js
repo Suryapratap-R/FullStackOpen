@@ -44,7 +44,8 @@ const App = () => {
       <button type='submit'>Login</button>
     </form>
   )
-  const  blogFormRef = useRef()
+  const blogFormRef = useRef()
+  
   const blogsList = () => (
     <>
     <h2>blogs</h2>
@@ -61,7 +62,7 @@ const App = () => {
     <div style={{ paddingTop: '20px' }}>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateLike={updateLike}/>
       )}
     </div>
     </>
@@ -87,6 +88,18 @@ const App = () => {
       setUser(userResponse)
       blogService.setToken(userResponse.token)
       window.localStorage.setItem('user', JSON.stringify(userResponse))
+    } catch (error) {
+      setIsError(true)
+      setNotificationMessage('wrong username or password')
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000);
+    }
+  }
+
+  const updateLike = async (id, blogObject) => {
+    try {
+      await blogService.updateById(id, blogObject)
     } catch (error) {
       setIsError(true)
       setNotificationMessage('wrong username or password')
