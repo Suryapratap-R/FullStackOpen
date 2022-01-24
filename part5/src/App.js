@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Blog from './components/Blog';
+import Toggable from './components/Toggable';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -55,19 +56,21 @@ const App = () => {
       setUser(null)
     }}>logout</button>
 
-    <h2>create new</h2>
-    <form onSubmit={handleCreateNew}>
-      <div>
-      title:<input value={title} onChange={handleTitleChange}/>
-      </div>
-      <div>
-      author:<input value={author} onChange={handleAuthorChange}/>
-      </div>
-      <div>
-      url:<input value={url} onChange={handleUrlChange}/>
-      </div>
-      <button type='submit'>create</button>
-    </form>
+    <Toggable showMessage='create new blog'>
+      <h2>create new</h2>
+      <form onSubmit={handleCreateNew}>
+        <div>
+        title:<input value={title} onChange={handleTitleChange}/>
+        </div>
+        <div>
+        author:<input value={author} onChange={handleAuthorChange}/>
+        </div>
+        <div>
+        url:<input value={url} onChange={handleUrlChange}/>
+        </div>
+        <button type='submit'>create</button>
+      </form>
+    </Toggable>
     <div style={{paddingTop: '20px'}}>
 
       {blogs.map(blog =>
