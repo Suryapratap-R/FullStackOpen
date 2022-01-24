@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, updateLike }) => {
+const Blog = ({ blog, updateLike, deletePost }) => {
   const [isVisible, setIsVisible] = useState(false)
   const viewDetails = { display: isVisible ? null : 'none' }
   
   const toggleVisible = () => {
     setIsVisible(!isVisible)
+  }
+  const deleteBlogPost = () => {
+    const deleteConfirm = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+    if (deleteConfirm) {
+      deletePost(blog.id)
+    }
   }
 
   return (
@@ -29,6 +35,7 @@ const Blog = ({ blog, updateLike }) => {
       </button>
       </div>
       <div style={viewDetails}>{blog.author}</div>
+      <div style={viewDetails}><button onClick={deleteBlogPost} style={{backgroundColor: 'DodgerBlue'}}>remove</button></div>
     </div> 
   )
 }

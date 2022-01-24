@@ -33,7 +33,7 @@ bloglistRouter.post('/', async (request, response) => {
     response.status(201).json(result)
 })
 
-bloglistRouter.delete('/:id',middleware.userExtractor, async (request, response) => {
+bloglistRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
     const postId = request.params.id
     const user = request.user
 

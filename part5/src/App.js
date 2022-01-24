@@ -8,7 +8,7 @@ import loginService from './services/login';
 const NotificationBanner = ({message, isError}) => {
   const color = isError ? 'Crimson' : 'green'
   return message!==null?(
-    <div style={{ border: `4px solid ${color}`, borderRadius: '8px', padding: '10px', maxWidth: '700px', margin: '18px 0', color: color, backgroundColor: 'slategray' }}>
+    <div style={{ border: `4px solid ${color}`, borderRadius: '8px', padding: '10px', maxWidth: '700px', margin: '18px 0', color: color, backgroundColor: 'WhiteSmoke' }}>
     {message}
     </div>
   ):null
@@ -45,6 +45,18 @@ const App = () => {
     </form>
   )
   const blogFormRef = useRef()
+
+  const deletePost = (id) => {
+    try {
+      blogService.deleteWithId(id);
+    } catch (error) {
+      setNotificationMessage(error)
+      setIsError(true)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000);
+    }
+  }
   
   const blogsList = () => (
     <>
@@ -61,12 +73,14 @@ const App = () => {
 
     <div style={{ paddingTop: '20px' }}>
 
-      {blogs.sort((a, b)=>b.likes-a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} updateLike={updateLike}/>
+      {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+        <Blog key={blog.id} blog={blog} updateLike={updateLike} deletePost={deletePost}/>
       )}
     </div>
     </>
   )
+
+
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value)
