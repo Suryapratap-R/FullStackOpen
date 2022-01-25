@@ -21,27 +21,31 @@ const Blog = ({ blog, updateLike, deletePost }) => {
     blog: PropTypes.object.isRequired
   }
   return (
-    <div style={{border: '1px solid', borderRadius: '2px', margin: '8px', padding: '8px'}}>
-      {blog.title} <button onClick={toggleVisible}>{ !isVisible ? 'show': 'hide'}</button>
-      <div style={viewDetails}>{blog.url}</div>
-      <div style={viewDetails}>likes {blog.likes}
-        <button
-          onClick={() => {
-            updateLike(blog.id,{
-              user: blog.user.id,
-              likes: blog.likes + 1,
-              author: blog.author,
-              title: blog.title,
-              url: blog.url
-            })
-          }
-          }
-        >
-        like
-      </button>
+    <div style={{ border: '1px solid', borderRadius: '2px', margin: '8px', padding: '8px' }}>
+      <div className='blogDefault'>
+        {blog.title} {blog.author} <button onClick={toggleVisible}>{ !isVisible ? 'show': 'hide'}</button>
       </div>
-      <div style={viewDetails}>{blog.author}</div>
-      <div style={viewDetails}><button onClick={deleteBlogPost} style={{backgroundColor: 'DodgerBlue'}}>remove</button></div>
+      <div style={viewDetails} className='hiddenDefault'>
+        <div>{blog.url}</div>
+        <div>likes {blog.likes}
+          <button
+            onClick={() => {
+              updateLike(blog.id,{
+                user: blog.user.id,
+                likes: blog.likes + 1,
+                author: blog.author,
+                title: blog.title,
+                url: blog.url
+              })
+            }
+            }
+          >
+          like
+        </button>
+        </div>
+        <div>{blog.author}</div>
+          <div><button onClick={deleteBlogPost} style={{ backgroundColor: 'DodgerBlue' }}>remove</button></div>
+      </div>
     </div> 
   )
 }
