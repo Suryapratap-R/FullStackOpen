@@ -6,17 +6,23 @@ import Blog from './Blog';
 describe('<blog> ', () => {
 
     let component
+    let updateLike 
+    let deletePost
+
 
     beforeEach(() => {
-        const updateLike = jest.fn()
-        const deletePost = jest.fn()
+        updateLike = jest.fn()
+        deletePost = jest.fn()
 
         const blogData = {
             title: 'test title',
             author: 'test author',
             id: 'test id',
             likes: 5,
-            url: 'test url'
+            url: 'test url',
+            user: {
+                id: 123
+            }
         }
 
         component = render(<Blog blog={blogData} updateLike={updateLike} deletePost={deletePost} />)
@@ -37,5 +43,17 @@ describe('<blog> ', () => {
         fireEvent.click(showButton)
         const defaultHidden = component.container.querySelector('.hiddenDefault')
         expect(defaultHidden).not.toHaveStyle('display : none')
+    })
+
+    test('like button clicked twice', () => {
+        const showButton = component.getByText('show')
+        fireEvent.click(showButton)
+        const defaultHidden = component.container.querySelector('.hiddenDefault')
+        expect(defaultHidden).not.toHaveStyle('display : none')
+        const likeButton = component.getByText('like')
+        fireEvent.click(likeButton)
+        fireEvent.click(likeButton)
+
+        expect(updateLike.mock.calls).toHaveLength(2)
     })
 })
