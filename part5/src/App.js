@@ -60,12 +60,16 @@ const App = () => {
   
   const blogsList = () => (
     <>
-    <h2>blogs</h2>
-    {user.name} logged in
+      <h2>blogs</h2>
+      <span>
+        {user.name} logged in 
+      </span>
     <button onClick={() => {
       window.localStorage.removeItem('user')
       setUser(null)
-    }}>logout</button>
+      }}>
+      logout
+    </button>
 
     <Toggable showMessage='create new blog' ref={blogFormRef}>
       <BlogForm createBlog={createBlog} />
