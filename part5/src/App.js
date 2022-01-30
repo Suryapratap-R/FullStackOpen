@@ -30,16 +30,16 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )
-  }, [blogs])
+  }, [])
 
   
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
-        Username<input name='username' onChange={handleUsernameChange} />
+        Username<input name='username' id='login-username' onChange={handleUsernameChange} />
       </div>
       <div>
-        Password<input name='password' type={'password'} onChange={handlePasswordChange} />
+        Password<input name='password' id='login-password' type={'password'} onChange={handlePasswordChange} />
       </div>
       <button type='submit'>Login</button>
     </form>

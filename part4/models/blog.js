@@ -1,11 +1,5 @@
-require('dotenv').config()
 const mongoose = require('mongoose')
-const logger = require('../utils/logger')
 
-const mongoUrl = process.env.NODE_ENV === 'test' ? process.env.TEST_MONGODB_URL : process.env.MONGODB_URL
-mongoose.connect(mongoUrl).then(() => {
-  logger.info('connected to mongodb')
-})
 
 const blogSchema = new mongoose.Schema({
   title: {
@@ -39,4 +33,6 @@ blogSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Blog', blogSchema)
+const Blog = mongoose.model('Blog', blogSchema)
+
+module.exports = Blog
