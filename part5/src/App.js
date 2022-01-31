@@ -80,7 +80,7 @@ const App = () => {
     </button>
 
     <Toggable showMessage='create new blog' ref={blogFormRef}>
-      <BlogForm createBlog={createBlog} />
+      <BlogForm createBlog={createBlog}/>
     </Toggable>
 
     <div style={{ paddingTop: '20px' }}>

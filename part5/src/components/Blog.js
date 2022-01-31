@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const Blog = ({ blog, updateLike, deletePost }) => {
   const [isVisible, setIsVisible] = useState(false)
   const viewDetails = { display: isVisible ? null : 'none' }
+  const [like, setLike] = useState(blog.likes)
   
   const toggleVisible = () => {
     setIsVisible(!isVisible)
@@ -21,24 +22,27 @@ const Blog = ({ blog, updateLike, deletePost }) => {
     blog: PropTypes.object.isRequired
   }
   return (
-    <div style={{ border: '1px solid', borderRadius: '2px', margin: '8px', padding: '8px' }}>
+    <div style={{ border: '1px solid', borderRadius: '2px', margin: '8px', padding: '8px' }} className='blog'>
       <div className='blogDefault'>
         {blog.title} {blog.author} <button onClick={toggleVisible}>{ !isVisible ? 'show': 'hide'}</button>
       </div>
       <div style={viewDetails} className='hiddenDefault'>
         <div>{blog.url}</div>
-        <div>likes {blog.likes}
+        <div className='blog-likes'>likes {like}
           <button
             onClick={() => {
+              const newLike = like + 1
+              setLike(newLike)
               updateLike(blog.id,{
                 user: blog.user.id,
-                likes: blog.likes + 1,
+                likes: newLike,
                 author: blog.author,
                 title: blog.title,
                 url: blog.url
               })
-            }
-            }
+              
+            }}
+            className='show-blog-btn'
           >
           like
         </button>

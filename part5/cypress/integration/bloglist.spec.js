@@ -46,7 +46,7 @@ describe('blog', function () {
                     cy.visit('http://localhost:3000')
                 })
             })
-            it.only('A blog can be created', function () {
+            it('A blog can be created', function () {
                 cy.get('button').contains('create new blog').click()
                 cy.get('#inputTitle').type('new title cypress')
                 cy.get('#inputAuthor').type('new author cypress')
@@ -55,8 +55,23 @@ describe('blog', function () {
                 cy.get('#create-blog').click()
 
                 cy.get('html').contains('added')
-                
             })
+
+            describe('a blog post exists', function () {
+                beforeEach(function () {
+                    cy.addBlog('new title cypress', 'author cypress', 'url/1 cypress')
+                })
+
+                it.only('blog can be liked', function () {
+                    cy.get('.blog').contains('new title cypress').get('button').contains('show').click()
+                    cy.get('.blog-likes').contains('likes 0')
+                    cy.get('.blog button').contains('like').click()
+                    cy.get('.blog-likes').contains('likes 1')
+                    cy.get('.blog button').contains('like').click()
+                    cy.get('.blog-likes').contains('likes 2')
+                })
+            })
+
         })
 
     })
