@@ -19,12 +19,13 @@ bloglistRouter.post('/', async (request, response) => {
     }
 
     const user = await User.findById(decodedToken.id)
+    console.log(user);
     const content = {
         title: request.body.title,
         author: request.body.author,
         likes: request.body.likes,
         url: request.body.url,
-        user: user._id
+        user: decodedToken.id
     }
     const post = new Blog(content)
     const result = await post.save()

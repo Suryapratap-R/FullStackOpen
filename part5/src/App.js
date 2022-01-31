@@ -17,15 +17,21 @@ const NotificationBanner = ({message, isError}) => {
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(window.localStorage.getItem('user')
-    ? JSON.parse(window.localStorage.getItem('user'))
-    : null)
+  const [user, setUser] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [isError, setIsError] = useState(true)
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
-  
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('user')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+  
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -46,11 +52,13 @@ const App = () => {
   )
   const blogFormRef = useRef()
 
-  const deletePost = (id) => {
+  const deletePost = async (id) => {
     try {
-      blogService.deleteWithId(id);
+      await blogService.deleteWithId(id)
+      setBlogs(blogs.filter(blog=>blog.id !== id))
+      
     } catch (error) {
-      setNotificationMessage(error)
+      setNotificationMessage(error.message)
       setIsError(true)
       setTimeout(() => {
         setNotificationMessage(null)
@@ -136,7 +144,15 @@ const App = () => {
     try {
       const res = await blogService.createNew(blogObject)
       setIsError(true)
-      console.log(res);
+      console.log('res',res);
+      setBlogs(blogs.concat({
+        title: res.title,
+        author: res.author,
+        url: res.url,
+        likes: res.likes,
+        user: res.user,
+        id: res.id
+      }))
       setNotificationMessage(`a new blog ${res.title} by ${res.author} added`)
       setIsError(false)
       setTimeout(() => {

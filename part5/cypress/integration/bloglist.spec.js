@@ -35,7 +35,28 @@ describe('blog', function () {
             cy.get('html').should('contain', 'suryapratap logged in')
         })
 
-        
+        describe('when logged in', function () {
+            beforeEach(function () {
+                const user = {
+                username: 'username',
+                password: 'password'
+            }
+                cy.request('POST', 'http://localhost:3003/api/login', user).then(response => {
+                    localStorage.setItem('user', JSON.stringify(response.body))
+                    cy.visit('http://localhost:3000')
+                })
+            })
+            it.only('A blog can be created', function () {
+                cy.get('button').contains('create new blog').click()
+                cy.get('#inputTitle').type('new title cypress')
+                cy.get('#inputAuthor').type('new author cypress')
+                cy.get('#inputUrl').type('new url cypress')
+
+                cy.get('#create-blog').click()
+
+                cy.get('html').contains('added')
+            })
+        })
 
     })
 })
