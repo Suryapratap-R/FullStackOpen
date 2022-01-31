@@ -55,6 +55,7 @@ describe('blog', function () {
                 cy.get('#create-blog').click()
 
                 cy.get('html').contains('added')
+                
             })
         })
 

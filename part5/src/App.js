@@ -58,7 +58,7 @@ const App = () => {
       setBlogs(blogs.filter(blog=>blog.id !== id))
       
     } catch (error) {
-      setNotificationMessage(error.message)
+      setNotificationMessage('you are not authorized to delete this note')
       setIsError(true)
       setTimeout(() => {
         setNotificationMessage(null)
