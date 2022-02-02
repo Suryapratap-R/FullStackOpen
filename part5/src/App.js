@@ -62,7 +62,7 @@ const App = () => {
       setIsError(true)
       setTimeout(() => {
         setNotificationMessage(null)
-      }, 5000);
+      }, 3000);
     }
   }
   
@@ -119,7 +119,7 @@ const App = () => {
       setNotificationMessage('wrong username or password')
       setTimeout(() => {
         setNotificationMessage(null)
-      }, 5000);
+      }, 3000);
     }
   }
 
@@ -131,7 +131,7 @@ const App = () => {
       setNotificationMessage('wrong username or password')
       setTimeout(() => {
         setNotificationMessage(null)
-      }, 5000);
+      }, 3000);
     }
   }
 
@@ -157,13 +157,13 @@ const App = () => {
       setIsError(false)
       setTimeout(() => {
         setNotificationMessage(null)
-      }, 5000);
+      }, 3000);
     } catch (error) {
       setNotificationMessage(error)
       setIsError(true)
       setTimeout(() => {
         setNotificationMessage(null)
-      }, 5000);
+      }, 3000);
     }
     
   }

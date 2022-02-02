@@ -33,3 +33,10 @@ Cypress.Commands.add('addBlog', function (title, author, url) {
 
     cy.get('#create-blog').click()
 })
+
+// Like blog post using title
+Cypress.Commands.add('likePost', function (title) {
+    cy.get('.blog').contains(title).contains('show').click()
+    cy.get('.blog').contains(title).parent().should('not.have.css', 'display', 'none').get('.blog-likes button').click()
+    cy.get('.blog').contains(title).contains('hide').click()
+})

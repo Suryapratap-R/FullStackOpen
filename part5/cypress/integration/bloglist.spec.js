@@ -57,18 +57,38 @@ describe('blog', function () {
                 cy.get('html').contains('added')
             })
 
-            describe('a blog post exists', function () {
+            describe('a several blog post exists', function () {
                 beforeEach(function () {
                     cy.addBlog('new title cypress', 'author cypress', 'url/1 cypress')
+                    cy.addBlog('title with 3 likes', 'author cypress', 'url/1 cypress')
+                    cy.addBlog('title with 2 likes', 'author cypress', 'url/1 cypress')
+                    cy.addBlog('title with 0 likes', 'author cypress', 'url/1 cypress')
                 })
 
-                it.only('blog can be liked', function () {
+                it('blog can be liked', function () {
                     cy.get('.blog').contains('new title cypress').get('button').contains('show').click()
                     cy.get('.blog-likes').contains('likes 0')
                     cy.get('.blog button').contains('like').click()
                     cy.get('.blog-likes').contains('likes 1')
                     cy.get('.blog button').contains('like').click()
                     cy.get('.blog-likes').contains('likes 2')
+                })
+                it('blog can be deleted', function () {
+                    cy.get('.blog').contains('new title cypress')
+                    cy.get('.blog button').contains('show').click()
+                    cy.get('.blog button').contains('remove').click()
+                    cy.get('html').should('not.contain','new title cypress')
+                })
+
+                it.only('blogs are sorted according to likes', function () {
+                    // cy.likePost('title with 3 likes')
+                    // cy.likePost('title with 3 likes')
+                    // cy.likePost('title with 3 likes')
+                    
+                    cy.likePost('title with 2 likes')
+                    cy.likePost('title with 2 likes')
+                    
+                    cy.likePost('new title cypress')
                 })
             })
 
