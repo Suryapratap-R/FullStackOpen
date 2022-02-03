@@ -60,9 +60,9 @@ describe('blog', function () {
             describe('a several blog post exists', function () {
                 beforeEach(function () {
                     cy.addBlog('new title cypress', 'author cypress', 'url/1 cypress')
-                    cy.addBlog('title with 3 likes', 'author cypress', 'url/1 cypress')
-                    cy.addBlog('title with 2 likes', 'author cypress', 'url/1 cypress')
-                    cy.addBlog('title with 0 likes', 'author cypress', 'url/1 cypress')
+                    cy.addBlog('title with 3 likes', 'author cypress', 'url/3 cypress')
+                    cy.addBlog('title with 2 likes', 'author cypress', 'url/2 cypress')
+                    cy.addBlog('title with 0 likes', 'author cypress', 'url/0 cypress')
                 })
 
                 it('blog can be liked', function () {
@@ -81,14 +81,17 @@ describe('blog', function () {
                 })
 
                 it.only('blogs are sorted according to likes', function () {
-                    // cy.likePost('title with 3 likes')
-                    // cy.likePost('title with 3 likes')
-                    // cy.likePost('title with 3 likes')
+                    cy.likePost('title with 3 likes')
+                    cy.likePost('title with 3 likes')
+                    cy.likePost('title with 3 likes')
                     
                     cy.likePost('title with 2 likes')
                     cy.likePost('title with 2 likes')
-                    
+
                     cy.likePost('new title cypress')
+
+
+                    cy.get('.blog').first().contains('title with 3 likes')
                 })
             })
 
