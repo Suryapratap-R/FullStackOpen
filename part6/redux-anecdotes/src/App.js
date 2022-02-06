@@ -5,6 +5,18 @@ const App = () => {
   const anecdotes = useSelector(state => state)
   const dispatch = useDispatch()
 
+  const addNew = (event) => {
+    event.preventDefault()
+    const newAnecdote = event.target.add.value
+
+    dispatch({
+      type: 'ADD_NEW',
+      data: {
+        anecdote: newAnecdote
+      }
+    })
+  }
+
   const vote = (id) => {
     console.log('vote', id)
     dispatch({
@@ -18,7 +30,7 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {anecdotes.sort((a, b)=> b.votes - a.votes).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
@@ -30,8 +42,8 @@ const App = () => {
         </div>
       )}
       <h2>create new</h2>
-      <form>
-        <div><input /></div>
+      <form onSubmit={addNew}>
+        <div><input name='add'/></div>
         <button>create</button>
       </form>
     </div>
