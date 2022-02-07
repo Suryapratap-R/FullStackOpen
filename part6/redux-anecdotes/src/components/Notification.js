@@ -1,19 +1,28 @@
 
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { notificationChanger } from '../reducers/notificationReducer'
 
 const Notification = () => {
-  const notification = useSelector(anecdotes => anecdotes.notificationMessage)
+  const dispatch = useDispatch()
+  const notification = useSelector(anecdotes => anecdotes.notification)
   const style = {
     border: 'solid',
     padding: 10,
     borderWidth: 1
   }
-  return (
-    <div style={style}>
+
+  if (notification === null) {
+    return null
+  } else {
+    setTimeout(() => {
+      dispatch(notificationChanger(null))
+    }, 5000)
+    return (<div style={style}>
       {notification}
-    </div>
-  )
+    </div>)
+  }
+
 }
 
 export default Notification
