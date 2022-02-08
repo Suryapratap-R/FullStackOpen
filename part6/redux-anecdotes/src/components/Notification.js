@@ -15,9 +15,6 @@ const Notification = () => {
   if (notification === null) {
     return null
   } else {
-    setTimeout(() => {
-      dispatch(notificationChanger(null))
-    }, 5000)
     return (<div style={style}>
       {notification}
     </div>)

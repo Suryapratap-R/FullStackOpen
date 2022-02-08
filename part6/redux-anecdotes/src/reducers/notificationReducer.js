@@ -12,4 +12,19 @@ export const notificationChanger = msg => ({
     notificationMessage: msg
 })
 
+export const setNotification = (message, seconds=3) => {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_NOTIFICATION',
+            notificationMessage: message
+        })
+        setTimeout(() => dispatch({
+            type: 'SET_NOTIFICATION',
+            notificationMessage: null
+        }),
+            seconds*1000
+        )
+    }
+}
+
 export default notificationReducer
