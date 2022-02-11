@@ -1,25 +1,29 @@
 
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { notificationChanger } from '../reducers/notificationReducer'
+import { connect } from 'react-redux'
+// import { notificationChanger } from '../reducers/notificationReducer'
 
-const Notification = () => {
-  const dispatch = useDispatch()
-  const notification = useSelector(anecdotes => anecdotes.notification)
+const Notification = (props) => {
+  // const notification = useSelector(anecdotes => anecdotes.notification)
   const style = {
     border: 'solid',
     padding: 10,
     borderWidth: 1
   }
 
-  if (notification === null) {
+  if (props.notification === null) {
     return null
   } else {
     return (<div style={style}>
-      {notification}
+      {props.notification}
     </div>)
   }
-
 }
 
-export default Notification
+const mapStateToProps = state => ({
+  notification: state.notification
+})
+
+const ConnectedNotification = connect(mapStateToProps)(Notification)
+
+export default ConnectedNotification
