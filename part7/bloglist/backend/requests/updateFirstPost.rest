@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/61da4c1e0900db73f94336c0 HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "first post",
+    "author": "suryapratap",
+    "url": "/1",
+    "likes": 77
+}

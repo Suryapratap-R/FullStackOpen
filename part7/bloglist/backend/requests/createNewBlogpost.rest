@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cnlhIiwiaWQiOiI2MWU1MGI0ODc2YWRhMGU3OGZkNmZhMTkiLCJpYXQiOjE2NDI0MTg2NzR9.F4Xh6eF4OK15IY13sywAGt8pdagWuSEpjEQhMvxrKSM
+
+{
+    "title": "eleven post",
+    "author": "suryapratap",
+    "url": "/4",
+    "likes": 0
+}
