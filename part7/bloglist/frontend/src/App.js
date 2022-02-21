@@ -4,33 +4,18 @@ import BlogForm from "./components/BlogForm";
 import Toggable from "./components/Toggable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import { useDispatch } from 'react-redux';
+import { setNotification } from "./reducers/notificationReducer";
+import NotificationBanner from "./components/Notification";
 
-const NotificationBanner = ({ message, isError }) => {
-  const color = isError ? "Crimson" : "green";
-  return message !== null ? (
-    <div
-      style={{
-        border: `4px solid ${color}`,
-        borderRadius: "8px",
-        padding: "10px",
-        maxWidth: "700px",
-        margin: "18px 0",
-        color: color,
-        backgroundColor: "WhiteSmoke",
-      }}
-    >
-      {message}
-    </div>
-  ) : null;
-};
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [notificationMessage, setNotificationMessage] = useState(null);
-  const [isError, setIsError] = useState(true);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("user");
@@ -79,11 +64,7 @@ const App = () => {
       await blogService.deleteWithId(id);
       setBlogs(blogs.filter((blog) => blog.id !== id));
     } catch (error) {
-      setNotificationMessage("you are not authorized to delete this note");
-      setIsError(true);
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 3000);
+      dispatch(setNotification("you are not authorized to delete this note", true));
     }
   };
 
@@ -137,11 +118,7 @@ const App = () => {
       blogService.setToken(userResponse.token);
       window.localStorage.setItem("user", JSON.stringify(userResponse));
     } catch (error) {
-      setIsError(true);
-      setNotificationMessage("wrong username or password");
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 3000);
+      dispatch(setNotification("wrong username or password", true));
     }
   };
 
@@ -157,11 +134,8 @@ const App = () => {
 
       setBlogs(sortUpdateLike);
     } catch (error) {
-      setIsError(true);
-      setNotificationMessage("wrong username or password");
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 3000);
+      dispatch(setNotification("wrong username or password", true));
+      
     }
   };
 
@@ -170,8 +144,6 @@ const App = () => {
     blogService.setToken(user.token);
     try {
       const res = await blogService.createNew(blogObject);
-      setIsError(true);
-      console.log("res", res);
       setBlogs(
         blogs.concat({
           title: res.title,
@@ -182,23 +154,17 @@ const App = () => {
           id: res.id,
         })
       );
-      setNotificationMessage(`a new blog ${res.title} by ${res.author} added`);
-      setIsError(false);
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 3000);
+     await dispatch(
+        setNotification(`a new blog ${res.title} by ${res.author} added`, false)
+      );
     } catch (error) {
-      setNotificationMessage(error);
-      setIsError(true);
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 3000);
+      dispatch(setNotification(error, true));
     }
   };
 
   return (
     <div style={{ margin: "0 Auto", maxWidth: "800px" }}>
-      <NotificationBanner message={notificationMessage} isError={isError} />
+      <NotificationBanner/>
       {user === null ? loginForm() : blogsList()}
     </div>
   );
