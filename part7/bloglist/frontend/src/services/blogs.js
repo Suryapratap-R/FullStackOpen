@@ -27,6 +27,14 @@ const updateById = async (id, newObject) => {
   return request.data;
 };
 
+const addLikes = async (id, likes) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const request = await axios.patch(baseUrl + "/" + id, {likes: likes+1}, config);
+  return request.data;
+};
+
 const deleteWithId = async (id) => {
   const config = {
     headers: { Authorization: token },
@@ -35,6 +43,6 @@ const deleteWithId = async (id) => {
   return request.data;
 };
 
-const blogService = { getAll, createNew, setToken, updateById, deleteWithId };
+const blogService = { getAll, createNew, setToken, updateById, deleteWithId, addLikes };
 
 export default blogService;

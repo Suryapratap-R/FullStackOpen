@@ -66,4 +66,19 @@ bloglistRouter.put('/:id', async (request, response) => {
     response.json(updatedBlog)
 })
 
+bloglistRouter.patch('/:id', async (request, response) => {
+    const id = request.params.id;
+    console.log(request.body);
+    console.log(request.body.likes);
+    if (request.body.likes) {
+        const blog = {
+            likes: request.body.likes
+        }
+        const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true })
+        response.json(updatedBlog)
+    } else {
+        return response.status(400).send({error: "likes property missing"})
+    }
+})
+
 module.exports = bloglistRouter

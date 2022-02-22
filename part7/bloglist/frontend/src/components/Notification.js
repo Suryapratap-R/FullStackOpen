@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import React from 'react';
 
 const NotificationBanner = () => {
-  const notification = useSelector((notification) => notification);
+    const notification = useSelector((data) => data.notification);
     const color = notification.isError ? "Crimson" : "green";
   return notification.message !== null ? (
     <div

@@ -4,18 +4,21 @@ import BlogForm from "./components/BlogForm";
 import Toggable from "./components/Toggable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from "./reducers/notificationReducer";
 import NotificationBanner from "./components/Notification";
+import { getAllBlogs } from "./reducers/blogsReducer";
 
 
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  // const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const dispatch = useDispatch()
+  const blogs = useSelector((data) => data.blogs)
+  console.log(blogs);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("user");
@@ -24,16 +27,9 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     }
+    dispatch(getAllBlogs())
   }, []);
 
-  useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      const sortedBlogs = blogs.sort(
-        (a, b) => parseInt(b.likes) - parseInt(a.likes)
-      );
-      setBlogs(sortedBlogs);
-    });
-  }, []);
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -59,14 +55,6 @@ const App = () => {
   );
   const blogFormRef = useRef();
 
-  const deletePost = async (id) => {
-    try {
-      await blogService.deleteWithId(id);
-      setBlogs(blogs.filter((blog) => blog.id !== id));
-    } catch (error) {
-      dispatch(setNotification("you are not authorized to delete this note", true));
-    }
-  };
 
   const blogsList = () => (
     <>
@@ -91,7 +79,6 @@ const App = () => {
             key={blog.id}
             blog={blog}
             updateLike={updateLike}
-            deletePost={deletePost}
           />
         ))}
       </div>
@@ -125,14 +112,14 @@ const App = () => {
   const updateLike = async (id, blogObject) => {
     try {
       await blogService.updateById(id, blogObject);
-      const updateBlogLike = blogs.map((blog) =>
-        blog.id === id ? { ...blog, likes: blog.likes + 1 } : blog
-      );
-      const sortUpdateLike = updateBlogLike.sort(
-        (a, b) => parseInt(b.likes) - parseInt(a.likes)
-      );
+      // const updateBlogLike = blogs.map((blog) =>
+      //   blog.id === id ? { ...blog, likes: blog.likes + 1 } : blog
+      // );
+      // const sortUpdateLike = updateBlogLike.sort(
+      //   (a, b) => parseInt(b.likes) - parseInt(a.likes)
+      // );
 
-      setBlogs(sortUpdateLike);
+      // setBlogs(sortUpdateLike);
     } catch (error) {
       dispatch(setNotification("wrong username or password", true));
       
@@ -144,16 +131,16 @@ const App = () => {
     blogService.setToken(user.token);
     try {
       const res = await blogService.createNew(blogObject);
-      setBlogs(
-        blogs.concat({
-          title: res.title,
-          author: res.author,
-          url: res.url,
-          likes: res.likes,
-          user: res.user,
-          id: res.id,
-        })
-      );
+      // setBlogs(
+      //   blogs.concat({
+      //     title: res.title,
+      //     author: res.author,
+      //     url: res.url,
+      //     likes: res.likes,
+      //     user: res.user,
+      //     id: res.id,
+      //   })
+      // );
      await dispatch(
         setNotification(`a new blog ${res.title} by ${res.author} added`, false)
       );

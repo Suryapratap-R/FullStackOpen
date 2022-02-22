@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { deleteBlogPost, likeBlogPost } from '../reducers/blogsReducer';
+import {useDispatch} from 'react-redux';
 
-const Blog = ({ blog, updateLike, deletePost }) => {
+const Blog = ({ blog }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [like, setLike] = useState(blog.likes);
+  const dispatch = useDispatch()
 
   const toggleVisible = () => {
     setIsVisible(!isVisible);
   };
-  const deleteBlogPost = () => {
+  const deletePost = () => {
     const deleteConfirm = window.confirm(
       `Remove blog ${blog.title} by ${blog.author}`
     );
     if (deleteConfirm) {
-      deletePost(blog.id);
+      dispatch(deleteBlogPost(blog.id))
     }
   };
 
@@ -26,13 +29,7 @@ const Blog = ({ blog, updateLike, deletePost }) => {
           onClick={() => {
             const newLike = like + 1;
             setLike(newLike);
-            updateLike(blog.id, {
-              user: blog.user.id,
-              likes: newLike,
-              author: blog.author,
-              title: blog.title,
-              url: blog.url,
-            });
+            dispatch(likeBlogPost(blog.id, blog.likes))
           }}
           className="show-blog-btn"
         >
@@ -42,7 +39,7 @@ const Blog = ({ blog, updateLike, deletePost }) => {
       <div>{blog.author}</div>
       <div>
         <button
-          onClick={deleteBlogPost}
+          onClick={deletePost}
           style={{ backgroundColor: "DodgerBlue" }}
         >
           remove
@@ -52,8 +49,6 @@ const Blog = ({ blog, updateLike, deletePost }) => {
   );
 
   Blog.propTypes = {
-    updateLike: PropTypes.func.isRequired,
-    deletePost: PropTypes.func.isRequired,
     blog: PropTypes.object.isRequired,
   };
   return (
